@@ -1,176 +1,222 @@
-# node-bebop
-[![Build Status](https://travis-ci.org/hybridgroup/node-bebop.svg?branch=master)](https://travis-ci.org/hybridgroup/node-bebop)
-[![Test Coverage](https://codeclimate.com/github/hybridgroup/node-bebop/badges/coverage.svg)](https://codeclimate.com/github/hybridgroup/node-bebop/coverage)  
+# node-sumo
 
-Control your Parrot Bebop drone using JavaScript!
+Control your Parrot Jumping Sumo drone using JavaScript!
 
-This module allows you to control, receive nav data, and receive video data from the [Parrot Bebop](http://www.parrot.com/products/bebop-drone/) WiFi controlled drone.
+This module allows you to control and receive video data from the [Parrot Jumping Sumo](http://www.parrot.com/products/jumping-sumo/) WiFi controlled drone.
 
-The implementation attempts to use the same interface as the [node-ar-drone](https://github.com/felixge/node-ar-drone) node module from [@felixge](https://github.com/felixge/) and [@rmehner](https://github.com/rmehner), so it can be mostly NodeCopter compatible.
+The implementation is heavily based on the [node-bebop](https://github.com/hybridgroup/node-bebop) from [@hybridgroup](https://github.com/hybridgroup). The Bebop and Jumping Sumo share the same underlying connection and management protocol with the following differences:
+* Jumping Sumo transmits MJPEG video instead of H.264 (no iframes to worry about)
+* The commands to drive the Jumping Sumo are completely different from those to fly the Bebop
+* The events from the Jumping Sumo are (mostly) different from those from the Bebop
 
 ## How to Install
 
 To get started, install the npm module:
 
-    $ npm install node-bebop
+    $ npm install git+https://github.com/forgeByAcision/node-sumo
 
 
 ## How to Use
 
-This simple example takes off, then lands after 5 seconds:
+This simple example postures the drone and moves it forwards for 1 second:
 
 ```javascript
-var bebop = require('node-bebop');
+var sumo = require('node-sumo');
 
-var drone = bebop.createClient();
+var drone = sumo.createClient();
 
 drone.connect(function() {
-  drone.takeOff();
+  drone.postureJumper();
+  drone.forward(50);
 
   setTimeout(function() {
-    drone.land();
-  }, 5000);
+    drone.stop();
+  }, 1000);
 });
 
 ```
 ### API
 
-### createClient()
+#### createClient()
 
-Returns a `new Bebop`
+Returns a `new Sumo`
 
-### connect(callback)
+#### getVideoStream()
 
-Connects to the drone and executes the callback when the drone is ready to fly.
+Returns a stream of MJPEG frames through the `data` event.
 
-### getVideoStream()
+#### connect(callback)
 
-Returns a stream of h.264 frames.
+Connects to the drone and executes the callback when the drone is ready to drive. Also fires the `ready` event when teh drone is ready.
 
-### getMjpegStream()
+#### forward(speed)
 
-Returns a stream of mjpeg images.
+Move the drone forward at the specified speed (between 0 and 127).
 
-### takePicture()
+#### backward(speed)
 
-Takes a picture and saves the image to the internal storage.
+Move the drone backward at the specified speed (between 0 and 127).
 
-### startRecording()
+#### right(speed)
 
-Starts recording video to the internal storage.
+Turn the drone right at the specified speed (between 0 and 127).
 
-### stopRecording()
+#### left(speed)
 
-Stops a previously started recording and saves to internal storage.
-
-#### takeOff(callback)
-
-Tell the drone to lift off the ground. Executes the callback when the drone is in the air.
-
-#### land(callback)
-
-Land the drone. Executes the callback when the drone is on the ground.
+Turn the drone right at the specified speed (between 0 and 127).
 
 #### stop()
 
-Tell the drone to hover in place.
+Tell the drone to stop moving.
 
-#### emergency()
+#### animationsLongJump()
 
-Tell the drone to drop like a stone.
+Perform a long jump. The drone needs to be in the jumper or kicker posture to use this API.
 
-#### up(val)
+When in kicker posture the first call will retract the drone's jump mechanism and the second will release it. You need to wait for the drone's jump mechanism to be fully retracted before releasing it. You can move the drone after the jump mechanism has been pulled in (for example, reversing up to a wall or object to kick) and before you release it.
 
-Cause the drone to increase in altitude at 0-100 speed
+#### animationsHighJump()
 
-#### down(val)
+Perform a high jump. The drone needs to be in the jumper posture to use this API.
 
-Cause the drone to decrease in altitude at 0-100 speed
+#### animationsStop()
 
-#### right(val)
+Stop the pre-programmed animation.
 
-Cause the drone to move to the right at 0-100 speed
+#### animationsSpin()
 
-#### left(val)
+Perform a spin.
 
-Cause the drone to move to the left at 0-100 speed
+#### animationsTap()
 
-#### forward(val)
+Tap the drone's jump mechanism.
 
-Cause the drone to move forward at 0-100 speed
+#### animationsSlowShake()
 
-#### backward(val)
+Shake the drone from side-to-side.
 
-Cause the drone to move backward at 0-100 speed
+#### animationsMetronome()
 
-#### clockwise(val)
+Perform the metronome animation.
 
-Cause the drone to spin in a clockwise direction at 0-100 speed
+#### animationsOndulation()
 
-#### counterClockwise(val)
+Perform the ondulation animation.
 
-Cause the drone to spin in a counter clockwise direction at 0-100 speed
+#### animationsSpinJump()
 
-#### frontFlip()
+Spin and then jump the drone.
 
-Tell the drone to do a front flip
+#### animationsSpinToPosture()
 
-#### backFlip()
+Spin and then change posture.
 
-Tell the drone to do a back flip
+#### animationsSpiral()
 
-#### rightFlip()
+Make the drone drive in a spiral.
 
-Tell the drone to do a flip to the right 
+#### animationsSlalom()
 
-#### leftFlip()
+Make the drone drive in a slalom pattern.
 
-Tell the drone to do a flip to the left
+#### postureStanding()
 
+Move the drone into the standing (on head) posture.
+
+#### postureJumper()
+
+Move the drone into the jumper posture. The drone's jump mechanism is used to propel the drone into the air.
+
+#### postureKicker()
+
+Move the drone into the kicker posture. The drone's jump mechanism is used to kick objects behind the drone.
 
 ### Events
-#### battery
 
-Emits battery level percentage
+#### getVideoStream(): data
 
-#### video
-
-Emits one h.264 video frame
+Emits the MJPEG video stream.
 
 #### ready
 
-Emitted when the drone has successfully connected
+Emitted when the application has connected to the drone and it is ready for commands.
 
-#### flying
+#### battery
 
-Emmited when the drone is flying in the air.
+Emits the battery level percentage.
 
-#### hovering
+#### postureStanding
 
-Emmited when the drone is hovering in the air.
+Emitted when the drone changes to the standing posture. The event may be emitted slightly before the movement is complete so you may want to wait a short time before sending the drone futher commands.
 
-#### landed
+#### postureJumper
 
-Emmited when the drone has landed on the ground.
+Emitted when the drone changes to the jumper posture. The event may be emitted slightly before the movement is complete so you may want to wait a short time before sending the drone futher commands.
 
-#### landing
+#### postureKicker
 
-Emmited when the drone is in the process of landing.
+Emitted when the drone changes to the kicker posture. The event may be emitted slightly before the movement is complete so you may want to wait a short time before sending the drone futher commands.
 
-#### takingOff
+#### postureStuck
 
-Emmited when the drone is in the process of taking off.
+Emitted when the drone is stuck.
 
-#### emergency
+#### postureUnknown
 
-Emmited when the drone encounters an emergency condition.
+Emitted when the drone is in an unknown position.
+
+#### batteryCritical
+
+Emitted when the battery is at a critically low level.
+
+#### batteryLow
+
+Emitted when the battery is at a low level.
+
+#### jumpLoadUnknown
+
+Emitted when the load state of the jump mechanism is unknown.
+
+#### jumpLoadUnloaded
+
+Emitted when the jump mechanism is unloaded (for example, after a jump or kick). The event may be emitted slightly before the movement is complete so you may want to wait a short time before sending the drone futher commands.
+
+#### jumpLoadLoaded
+
+Emitted when the jump mechanism is retracted (for example, after a long jump while in the kicker posture). The event may be emitted slightly before the movement is complete so you may want to wait a short time before sending the drone futher commands.
+
+#### jumpLoadBusy
+
+Emitted when the jump mechanism is busy (for example, if you tell the drone to jump while a jump is already in progress).
+
+#### jumpLoadLowBatteryUnloaded
+
+Emitted when the jump mechanism is unloaded and the drone cannot perform the jump requested because the battery is low.
+
+#### jumpLoadLowBatteryLoaded
+
+Emitted when the jump mechanism is unloaded and the drone cannot perform the jump requested because the battery is low.
+
+#### jumpMotorOK
+
+Emitted when the jump motor is OK (it may have previously been blocked or overheated).
+
+#### jumpMotorErrorBlocked
+
+Emitted when the jump motor is blocked.
+
+#### jumpMotorErrorOverheated
+
+Emitted when the jump motor has overheated.
+
+#### video
+
+Emits single MJPEG video frame
 
 ## Release History
 
-0.2.0 Add flip commands, implement ack processes, emit flying state and battery events
-
-0.1.0 Initial release
+0.0.1 Initial release
 
 ## License
 
-Copyright (c) 2015 The Hybrid Group. Licensed under the MIT license.
+Copyright (c) 2015 Acision. Licensed under the MIT license.
