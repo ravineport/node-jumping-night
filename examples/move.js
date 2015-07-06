@@ -17,7 +17,7 @@ drone.connect(function() {
     drone.right(10);
     setTimeout(function() {
       drone.stop();
-      drone.longJump();
+      drone.animationsLongJump();
       drone.animationsSlalom();
     }, 5000);
   }, 1000);
