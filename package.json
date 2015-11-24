@@ -1,19 +1,19 @@
 {
-  "name": "node-sumo",
+  "name": "jumping-night-drone",
   "version": "0.0.1",
-  "description": "library for the Parrot Jumping Sumo",
+  "description": "library for the Parrot Jumping Night Drone",
   "main": "lib/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/forgeByAcision/node-sumo.git"
+    "url": ""
   },
   "keywords": [
     "parrot",
     "jumping",
-    "sumo",
+    "night",
     "drone"
   ],
-  "author": "Peter Dunkley <peter.dunkley@acision.com>",
+  "author": "taniTk <tanitk91@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/forgeByAcision/node-sumo/issues"
