@@ -4,31 +4,32 @@ var sumo = require('../.');
 var cv = require('opencv');
 
 var drone = sumo.createClient();
-var video = drone.getVideoStream();
+var video;
 var buf = null;
 var w = new cv.NamedWindow("Video", 0);
 
 drone.connect(function() {
   console.log("Connected...");
 
-  drone.postureJumper();
-  drone.forward(50);
-  setTimeout(function() {
-    drone.right(10);
-    setTimeout(function() {
-      drone.stop();
-      drone.animationsLongJump();
-      drone.animationsSlalom();
-    }, 5000);
-  }, 1000);
+  // drone.postureJumper();
+  // drone.forward(50);
+  // setTimeout(function() {
+  //   drone.right(10);
+  //   setTimeout(function() {
+  //     drone.stop();
+  //     drone.animationsLongJump();
+  //     drone.animationsSlalom();
+  //   }, 5000);
+  // }, 1000);
+  video = drone.getVideoStream();
+  video.on("data", function(data) {
+    buf = data;
+  });
+
 });
 
 drone.on("battery", function(battery) {
   console.log("battery: " + battery);
-});
-
-video.on("data", function(data) {
-  buf = data;
 });
 
 setInterval(function() {
