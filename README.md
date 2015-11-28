@@ -1,5 +1,6 @@
-# node-sumo
+# jumping-night-drone
 
+# This README is under construction.
 Control your Parrot Jumping Sumo drone using JavaScript!
 
 This module allows you to control and receive video data from the [Parrot Jumping Sumo](http://www.parrot.com/products/jumping-sumo/) WiFi controlled drone.

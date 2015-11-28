@@ -47,10 +47,10 @@ setInterval(function() {
           return;
         }
         w.show(im);
-        w.blockingWaitKey(0, 50);
+        w.blockingWaitKey(0, 10);
       }
     });
   } catch(e) {
     console.log(e);
   }
-}, 100);
+}, 1);
