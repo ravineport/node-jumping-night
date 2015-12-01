@@ -3,18 +3,15 @@
 # This README is under construction.
 Control your Parrot Jumping Sumo drone using JavaScript!
 
-This module allows you to control and receive video data from the [Parrot Jumping Sumo](http://www.parrot.com/products/jumping-sumo/) WiFi controlled drone.
+This module allows you to control and receive video data from the [Parrot Jumping Night Drone](http://www.parrot.com/usa/products/jumping-night-drone/) WiFi controlled drone.
 
-The implementation is heavily based on the [node-bebop](https://github.com/hybridgroup/node-bebop) from [@hybridgroup](https://github.com/hybridgroup). The Bebop and Jumping Sumo share the same underlying connection and management protocol with the following differences:
-* Jumping Sumo transmits MJPEG video instead of H.264 (no iframes to worry about)
-* The commands to drive the Jumping Sumo are completely different from those to fly the Bebop
-* The events from the Jumping Sumo are (mostly) different from those from the Bebop
+The implementation is heavily based on the [node-sumo](https://github.com/forgeByAcision/node-sumo) from [@forgeByAcision](https://github.com/forgeByAcision).
 
 ## How to Install
 
 To get started, install the npm module:
 
-    $ npm install git+https://github.com/forgeByAcision/node-sumo
+    $ npm install git+https://github.com/taniTk/node-jumping-night
 
 
 ## How to Use
@@ -214,10 +211,16 @@ Emitted when the jump motor has overheated.
 
 Emits single MJPEG video frame
 
+## TODO
+
+* get sound from drone
+* send sound from client
+* play mp3 file
+
 ## Release History
 
 0.0.1 Initial release
 
 ## License
 
-Copyright (c) 2015 Acision. Licensed under the MIT license.
+Copyright (c) 2015 taniTk. Licensed under the MIT license.
