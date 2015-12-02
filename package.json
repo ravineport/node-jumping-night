@@ -1,24 +1,26 @@
 {
-  "name": "jumping-night-drone",
+  "name": "node-jumping-night",
   "version": "0.0.1",
   "description": "library for the Parrot Jumping Night Drone",
   "main": "lib/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/taniTk/jumping-night-drone"
+    "url": "https://github.com/taniTk/node-jumping-night"
   },
   "keywords": [
     "parrot",
     "jumping",
     "night",
-    "drone"
+    "drone",
+    "node",
+    "node.js"
   ],
   "author": "taniTk <tanitk91@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/taniTk/jumping-night-drone/issues"
+    "url": "https://github.com/taniTk/node-jumping-night/issues"
   },
-  "homepage": "https://github.com/taniTk/jumping-night-drone",
+  "homepage": "https://github.com/taniTk/node-jumping-night",
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-eslint": "^13.0.0"
