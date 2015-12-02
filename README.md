@@ -19,7 +19,7 @@ To get started, install the npm module:
 This simple example postures the drone and moves it forwards for 1 second:
 
 ```javascript
-var sumo = require('node-sumo');
+var sumo = require('node-jumping-night');
 
 var drone = sumo.createClient();
 
